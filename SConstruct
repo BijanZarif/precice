@@ -271,7 +271,7 @@ env = conf.Finish() # Used to check libraries
 
 #--------------------------------------------- Define sources and build targets
 
-(sourcesPreCICE, sourcesPreCICEMain) = SConscript (
+(sourcesPreCICE, sourcesPreCICEMain, sourcesPreCICETest) = SConscript (
     'src/SConscript-linux',
     variant_dir = buildpath,
     duplicate = 0
@@ -293,19 +293,6 @@ if not env["boost_inst"]:
     sourcesBoost = Glob(buildpath + '/boost/*.cpp')
     print "... done"
 
-def filter_recursive(l, p):
-    lst = []
-    for i in l:
-        if type(i) == list:
-            lst.append(filter_recursive(i, p))
-        else:
-            if p(i):
-                lst.append(i)
-    return lst
-
-sourcesPreCICETest = sourcesPreCICE
-sourcesPreCICE     = filter_recursive(sourcesPreCICE,     lambda x: not str(x).endswith("Boost.cpp"))
-sourcesPreCICEMain = filter_recursive(sourcesPreCICEMain, lambda x: not str(x).endswith("Boost.cpp"))
 
 staticlib = env.StaticLibrary (
     target = buildpath + '/libprecice',
@@ -329,7 +316,8 @@ bin = env.Program (
 
 tests = env.Program (
     target = buildpath + '/testprecice',
-    source = [sourcesPreCICETest,
+    source = [sourcesPreCICE,
+              sourcesPreCICETest,
               sourcesBoost]
 )
 
