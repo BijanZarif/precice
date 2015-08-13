@@ -5,6 +5,8 @@ struct GlobalFixture {
   GlobalFixture()
   {
     std::cout << "Global setup\n";
+    // boost::unit_test::master_test_suite_t& master = boost::unit_test::framework::master_test_suite();
+    // BOOST_FAIL("CRASH BOOM"); Use exceptions if you want to fail inside a 
   }
   ~GlobalFixture()
   {
